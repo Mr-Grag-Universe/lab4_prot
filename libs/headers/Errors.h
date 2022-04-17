@@ -1,0 +1,12 @@
+#ifndef ERRORS
+#define ERRORS
+typedef enum ERRORS{
+    NULL_PTR_IN_UNEXCITED_PLACE,
+    FREEING_OF_NULL_PTR,
+    MEMORY_OVERFLOW,
+    IT_IS_OK,
+    WRONG_INPUT,
+    RUNTIME_ERROR,
+    NOT_FOUND,
+} Error;
+#endif
