@@ -22,6 +22,7 @@ int key_cmp(KeyType * key1, KeyType * key2);
 /// return false if there is NULL and true in another case  \n
 bool copy_key(KeyType * key, KeyType * src);
 bool print_key(KeyType * key);
+KeyType * enter_key();
 Error free_key(KeyType * key);
 
 ///===============INFO===============
@@ -33,6 +34,7 @@ typedef struct InfoType {
 /// if there is NULL return false, else true    \n
 bool copy_info(InfoType * info, InfoType * src);
 bool print_info(InfoType * info);
+InfoType * enter_info();
 Error free_info(InfoType * info);
 
 ///=============NODE===============
@@ -50,12 +52,14 @@ Node * get_max_node(const Node * node);
 Node * get_min_node(const Node * node);
 Error print_node(const Node * node);
 Error free_node(Node * node);
+Error recursion_free_BT(Node * node);
 
 ///=============TREE===============
 
 typedef struct Tree {
     Node * root;
 } Tree;
+Tree * init_tree();
 Error add_el_into_BT(Tree * tree, KeyType * key, InfoType * info);
 Error delete_el_from_BT(Tree * tree, KeyType * key);
 // TBT

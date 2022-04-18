@@ -5,6 +5,8 @@
 #include "stdbool.h"
 #include "stdlib.h"
 #include "stdio.h"
+#include "KGetLine.h"
+#include "MyString.h"
 
 //===============KEY==============
 
@@ -44,13 +46,31 @@ bool copy_key(KeyType * key, KeyType * src) {
 }
 
 bool print_key(KeyType * key) {
-    if (key == NULL || key->strKey) {
+    if (key == NULL || key->strKey == NULL) {
         printf("null\n");
         return false;
     }
 
-    printf("size: %ld\nstrKey: %s\n", key->keySize, key->strKey);
+    printf("strKey: %s\n", key->strKey);
     return true;
+}
+
+KeyType * enter_key() {
+    KeyType * key = malloc(sizeof(KeyType));
+    if (key == NULL) {
+        fprintf(stderr, "Cannot alloc memory for new entered key!\n");
+        exit(MEMORY_OVERFLOW);
+    }
+
+    key->strKey = get_line();
+    if (key->strKey)
+        key->keySize = strlen(key->strKey)+1;
+    else {
+        key->keySize = 0;
+        fprintf(stderr, "null key has been entered.\n");
+    }
+
+    return key;
 }
 
 Error free_key(KeyType * key) {
@@ -60,10 +80,16 @@ Error free_key(KeyType * key) {
     }
     if (key->strKey == NULL) {
         fprintf(stderr, "WARNING: key with null strKey was freed.\n");
+        free(key);
         return IT_IS_OK;
     }
 
     free(key->strKey);
+    key->strKey = NULL;
+
+    free(key);
+    key = NULL;
+
     return IT_IS_OK;
 }
 
@@ -83,8 +109,20 @@ bool print_info(InfoType * info) {
         return false;
     }
 
-    printf("val: %ud\n", info->val);
+    printf("val: %u\n", info->val);
     return true;
+}
+
+InfoType * enter_info() {
+    InfoType * info = malloc(sizeof(InfoType));
+    if (info == NULL) {
+        fprintf(stderr, "Cannot alloc memory for new entered info!\n");
+        exit(MEMORY_OVERFLOW);
+    }
+
+    info->val = get_int();
+
+    return info;
 }
 
 Error free_info(InfoType * info) {
@@ -94,5 +132,7 @@ Error free_info(InfoType * info) {
     }
 
     free(info);
+    info = NULL;
+
     return IT_IS_OK;
 }

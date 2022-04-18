@@ -88,5 +88,18 @@ Error free_node(Node * node) {
         return FREEING_OF_NULL_PTR;
     }
 
+    free(node);
+    node = NULL;
+
     return IT_IS_OK;
+}
+
+Error recursion_free_BT(Node * node) {
+    if (node) {
+        recursion_free_BT(node->left);
+        recursion_free_BT(node->right);
+        return free_node(node);
+    } else {
+        return IT_IS_OK;
+    }
 }

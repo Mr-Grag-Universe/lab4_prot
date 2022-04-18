@@ -9,6 +9,7 @@
 #include "commands.h"
 #include "Errors.h"
 #include "binary_tree.h"
+#include "tree_dialog.h"
 
 void clrscr(){
     system("@cls||clear");
@@ -37,22 +38,25 @@ bool check_command(char * command) {
     return true;
 }
 
-bool execute_command(Tree ** tree, Command command) {
+bool execute_command(Tree * tree, Command command) {
     switch (command) {
         case EXIT: {
             printf("OK. Goodbye!\n");
             return true;
         }
         case ADD_EL: {
+            add_tree_dialog(tree);
             return false;
         }
         case GET_EL: {
             return false;
         }
         case DELETE_EL: {
+            delete_tree_dialog(tree);
             return false;
         }
         case PRINT_TREE: {
+            print_tree_dialog(tree);
             return false;
         }
         case DELETE_ALl: {
@@ -90,7 +94,8 @@ Command get_command_code(char * command) {
 }
 
 Tree * start_session() {
-    return NULL;
+    Tree * tree = init_tree();
+    return tree;
 }
 
 int main() {
@@ -126,11 +131,11 @@ int main() {
         Command command_code = get_command_code(command);
 
 
-        finish = execute_command(&tree, command_code);
+        finish = execute_command(tree, command_code);
 
         free(command);
     }
-
+    free_BT(tree);
     free(menu);
 
     return 0;
