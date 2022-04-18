@@ -91,6 +91,7 @@ Error add_el_into_BT(Tree * tree, KeyType * key, InfoType * info) {
     return IT_IS_OK;
 }
 
+/// deletes element from binary tree with key, return IT_IS_OK if deleting was successful
 Error delete_el_from_BT(Tree * tree, KeyType * key) {
     Node * node = get_node_from_BT(tree, key);
     if (node == NULL) {
@@ -203,7 +204,12 @@ Error delete_el_from_BT(Tree * tree, KeyType * key) {
 
 // TBT
 InfoType * get_info_from_BT(const Tree * tree, KeyType * key) {
-    return NULL;
+    Node * node = get_node_from_BT(tree, key);
+    if (node == NULL) {
+        fprintf(stderr, "There is no element with such key in this tree.\n");
+        return NULL;
+    }
+    return node->info;
 }
 
 Node * get_node_from_BT(const Tree * tree, KeyType * key) {
@@ -276,4 +282,30 @@ Error free_BT(Tree * tree) {
     free(tree);
 
     return IT_IS_OK;
+}
+
+InfoType ** traversal_tree(Tree* tree) {
+    if (tree == NULL) {
+        fprintf(stderr, "Tree pointer is NULL");
+        return NULL;
+    }
+
+    TreeIteratorContainer * container = create_iterator(tree);
+    if (container == NULL) {
+        fprintf(stderr, "NULL pointer of container have been got after it's creation.\n");
+        return NULL;
+    }
+
+    InfoType ** info_array = malloc(sizeof(InfoType*) * (container->number_of_elements+1));
+    for (size_t i = 0; i < container->number_of_elements; ++i) {
+        if (container->iterator == NULL) {
+            fprintf(stderr, "WARNING: NULL pointer to the info here.\n");
+            continue;
+        }
+        info_array[i] = container->iterator[i]->info;
+    }
+
+    info_array[container->number_of_elements] = NULL;
+
+    return info_array;
 }

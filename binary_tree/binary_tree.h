@@ -4,6 +4,8 @@
 
 #ifndef LAB4_PROT_BINARY_TREE_H
 #define LAB4_PROT_BINARY_TREE_H
+
+#include <malloc.h>
 #include "string.h"
 #include "stdio.h"
 #include "stdbool.h"
@@ -67,5 +69,46 @@ InfoType * get_info_from_BT(const Tree * tree, KeyType * key);
 Node * get_node_from_BT(const Tree * tree, KeyType * key);
 Error print_BT(const Tree * tree);
 Error free_BT(Tree * tree);
+InfoType ** traversal_tree(Tree* tree);
+
+///=============TREE_ITERATOR=============
+// not use
+typedef struct TreeIterator {
+    Node * node;
+} TreeIterator;
+
+typedef struct TreeIteratorContainer {
+    size_t number_of_elements;
+    Node ** iterator;
+} TreeIteratorContainer;
+TreeIteratorContainer * create_iterator(Tree * tree);
+Error free_container(TreeIteratorContainer * container);
+
+/*
+struct MyStruct;
+
+void print_my_struct(struct MyStruct*);
+
+typedef struct MyStruct {
+    char* str;
+    void (*Print)(struct MyStruct*);
+} MyStruct;
+
+void print_my_struct(struct MyStruct* str) {
+    printf("%s", str->str);
+}
+
+struct MyStruct* GetMyStruct(char* str) {
+    struct MyStruct* a = malloc(sizeof(MyStruct));
+    a->str = str;
+    a->Print = print_my_struct;
+    return a;
+}
+
+void test() {
+    MyStruct *a = GetMyStruct("asdfe");
+    a->Print(a);
+}
+*/
 
 #endif //LAB4_PROT_BINARY_TREE_H

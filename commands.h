@@ -7,10 +7,13 @@
 typedef enum Commands {
     EXIT,
     ADD_EL,
-    GET_EL,
+    FIND_EL,
     DELETE_EL,
     PRINT_TREE,
     DELETE_ALl,
+    TRAVERSAL,
+    FIND_MAX_ELEMENT,
+    FIND_MIN_ELEMENT,
     UNKNOWN_COMMAND,
 } Command;
 #endif //LAB3_COMMANDS_H

@@ -20,9 +20,12 @@ char ** init_menu_points() {
     menu_points[EXIT] = "exit";
     menu_points[ADD_EL] = "add a new element";
     menu_points[DELETE_EL] = "delete an element";
-    menu_points[GET_EL] = "get an element";
+    menu_points[FIND_EL] = "find an element";
     menu_points[PRINT_TREE] = "print tree";
     menu_points[DELETE_ALl] = "delete all";
+    menu_points[TRAVERSAL] = "tree traversal";
+    menu_points[FIND_MIN_ELEMENT] = "find min element";
+    menu_points[FIND_MAX_ELEMENT] = "find max element";
     return menu_points;
 }
 
@@ -38,28 +41,46 @@ bool check_command(char * command) {
     return true;
 }
 
-bool execute_command(Tree * tree, Command command) {
+bool execute_command(Tree ** tree, Command command) {
     switch (command) {
         case EXIT: {
             printf("OK. Goodbye!\n");
             return true;
         }
         case ADD_EL: {
-            add_tree_dialog(tree);
+            add_tree_dialog(*tree);
             return false;
         }
-        case GET_EL: {
+        case FIND_EL: {
+            if (get_tree_dialog(*tree) != IT_IS_OK)
+                printf("Wrong input or something else.\n");
             return false;
         }
         case DELETE_EL: {
-            delete_tree_dialog(tree);
+            delete_tree_dialog(*tree);
             return false;
         }
         case PRINT_TREE: {
-            print_tree_dialog(tree);
+            print_tree_dialog(*tree);
             return false;
         }
         case DELETE_ALl: {
+            free_BT(*tree);
+            *tree = init_tree();
+            return false;
+        }
+        case TRAVERSAL: {
+            traversal_tree_dialog(*tree);
+            char * answer = get_line();
+            free(answer);
+            return false;
+        }
+        case FIND_MIN_ELEMENT: {
+            find_min_dialog(*tree);
+            return false;
+        }
+        case FIND_MAX_ELEMENT: {
+            find_max_dialog(*tree);
             return false;
         }
         default: {
@@ -81,7 +102,7 @@ Command get_command_code(char * command) {
     if (!strcmp(command, "exit"))
         return EXIT;
     else if (!strcmp(command, "get"))
-        return GET_EL;
+        return FIND_EL;
     else if (!strcmp(command, "add"))
         return ADD_EL;
     else if (!strcmp(command, "delete"))
@@ -90,6 +111,12 @@ Command get_command_code(char * command) {
         return PRINT_TREE;
     else if (!strcmp(command, "delete all"))
         return DELETE_ALl;
+    else if (!strcmp(command, "traversal"))
+        return TRAVERSAL;
+    else if (!strcmp(command, "min"))
+        return FIND_MIN_ELEMENT;
+    else if (!strcmp(command, "max"))
+        return FIND_MAX_ELEMENT;
     else return UNKNOWN_COMMAND;
 }
 
@@ -130,8 +157,7 @@ int main() {
 
         Command command_code = get_command_code(command);
 
-
-        finish = execute_command(tree, command_code);
+        finish = execute_command(&tree, command_code);
 
         free(command);
     }
