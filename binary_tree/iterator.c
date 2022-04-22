@@ -24,7 +24,7 @@ void recursion(TreeIteratorContainer * container, Node * node, Node * last_node,
     }
 }
 
-TreeIteratorContainer * create_iterator(Tree * tree) {
+TreeIteratorContainer * create_iterator(const Tree * tree) {
     if (tree == NULL || tree->root == NULL) {
         fprintf(stderr, "WARNING: Tree given for the iteration is empty or it's pointer is NULL.\n");
         return NULL;

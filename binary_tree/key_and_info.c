@@ -93,7 +93,27 @@ Error free_key(KeyType * key) {
     return IT_IS_OK;
 }
 
+KeyType * generate_key(size_t key_size) {
+    KeyType * key = malloc(sizeof(KeyType));
+
+    key->strKey = generate_word(key_size);
+
+    key->keySize = key_size;
+    return key;
+}
+
 //=============INFO===========
+
+InfoType * init_info() {
+    InfoType * info = malloc(sizeof(InfoType));
+    if (info == NULL) {
+        fprintf(stderr, "there is no enough memory to alloc for info initialisation\n");
+        exit(MEMORY_OVERFLOW);
+    }
+
+    info->val = 0;
+    return info;
+}
 
 bool copy_info(InfoType * info, InfoType * src) {
     if (info == NULL || src == NULL)
@@ -135,4 +155,10 @@ Error free_info(InfoType * info) {
     info = NULL;
 
     return IT_IS_OK;
+}
+
+InfoType * generate_info(unsigned int min, unsigned int max) {
+    InfoType * info = malloc(sizeof(InfoType));
+    info->val = (rand() % (max-min)) + min;
+    return info;
 }

@@ -16,7 +16,8 @@ void file_copy(FILE * ifp, FILE * ofp) {
         putc(c, ofp);
 }
 
-char * f_get_line(FILE * file) {
+char * f_get_line(FILE * file, long offset) {
+    fseek(file, offset, SEEK_SET);
     char * res = NULL;
     char n = 0;
     int old_len = 0;
@@ -39,7 +40,12 @@ char * f_get_line(FILE * file) {
     } while (n > 0);
 
     // fscanf(file, "%*c");
-    if (old_len > 0) res[old_len] = '\0';
+    if (old_len > 0) {
+        if (res[old_len-1] == '\r')
+            res[old_len-1] = '\0';
+        else
+            res[old_len] = '\0';
+    }
     else res = (char *) calloc(1, sizeof(char));
     return res;
 }
@@ -60,7 +66,7 @@ char * f_get_lines(char * path) {
     char * line = NULL;
     int len = 0;
     do {
-        line = f_get_line(file);
+        line = f_get_line(file, ftell(file));
 	    printf("line: %s\n", line);
 	    sleep(3);
         if (line) {

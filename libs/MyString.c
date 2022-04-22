@@ -186,3 +186,14 @@ int get_int() {
     free(line);
     return res;
 }
+
+/// размер без 0 терминотора
+char * generate_word(size_t size) {
+    char * word = malloc(sizeof(char) * (size+1));
+    for (int j = 0; j < size; ++j) {
+        char x = rand()%2;
+        word[j] = (char)((int)(x ? 'A' : 'a') + rand() % 26);
+    }
+    word[size] = '\0';
+    return word;
+}

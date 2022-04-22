@@ -9,4 +9,5 @@ unsigned char is_operator(char * s);
 int is_letter(char * line);
 int get_int();
 char * str_copy(char * line);
+char * generate_word(size_t size);
 #endif

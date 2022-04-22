@@ -26,6 +26,9 @@ char ** init_menu_points() {
     menu_points[TRAVERSAL] = "tree traversal";
     menu_points[FIND_MIN_ELEMENT] = "find min element";
     menu_points[FIND_MAX_ELEMENT] = "find max element";
+    menu_points[TIMING] = "check out time";// of traversal and searching in BT";
+    menu_points[RANDOM_GENERATE] = "generate random tree data";
+    menu_points[READ_TREE] = "read tree from file";
     return menu_points;
 }
 
@@ -83,6 +86,18 @@ bool execute_command(Tree ** tree, Command command) {
             find_max_dialog(*tree);
             return false;
         }
+        case TIMING: {
+            timing_dialog();
+            return false;
+        }
+        case RANDOM_GENERATE: {
+            random_dialog(*tree);
+            return false;
+        }
+        case READ_TREE: {
+            read_tree_dialog(tree);
+            return false;
+        }
         default: {
             printf("Your command is wrong!\n");
             return false;
@@ -117,6 +132,10 @@ Command get_command_code(char * command) {
         return FIND_MIN_ELEMENT;
     else if (!strcmp(command, "max"))
         return FIND_MAX_ELEMENT;
+    else if (!strcmp(command, "time"))
+        return TIMING;
+    else if (!strcmp(command, "read"))
+        return READ_TREE;
     else return UNKNOWN_COMMAND;
 }
 

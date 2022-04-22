@@ -8,5 +8,6 @@ typedef enum ERRORS{
     WRONG_INPUT,
     RUNTIME_ERROR,
     NOT_FOUND,
+    FILE_WAS_NOT_FOUND,
 } Error;
 #endif

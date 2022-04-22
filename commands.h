@@ -14,6 +14,9 @@ typedef enum Commands {
     TRAVERSAL,
     FIND_MAX_ELEMENT,
     FIND_MIN_ELEMENT,
+    TIMING,
+    RANDOM_GENERATE,
+    READ_TREE,
     UNKNOWN_COMMAND,
 } Command;
 #endif //LAB3_COMMANDS_H

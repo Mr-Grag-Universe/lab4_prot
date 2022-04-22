@@ -26,6 +26,7 @@ bool copy_key(KeyType * key, KeyType * src);
 bool print_key(KeyType * key);
 KeyType * enter_key();
 Error free_key(KeyType * key);
+KeyType * generate_key(size_t key_size);
 
 ///===============INFO===============
 
@@ -38,6 +39,7 @@ bool copy_info(InfoType * info, InfoType * src);
 bool print_info(InfoType * info);
 InfoType * enter_info();
 Error free_info(InfoType * info);
+InfoType * generate_info(unsigned int min, unsigned int max);
 
 ///=============NODE===============
 
@@ -81,7 +83,7 @@ typedef struct TreeIteratorContainer {
     size_t number_of_elements;
     Node ** iterator;
 } TreeIteratorContainer;
-TreeIteratorContainer * create_iterator(Tree * tree);
+TreeIteratorContainer * create_iterator(const Tree * tree);
 Error free_container(TreeIteratorContainer * container);
 
 /*

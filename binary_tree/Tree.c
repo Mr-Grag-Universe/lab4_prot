@@ -21,7 +21,7 @@ Tree * init_tree() {
 /// adds element into binary tree
 /// return IT_IS_OK if adding was successful
 Error add_el_into_BT(Tree * tree, KeyType * key, InfoType * info) {
-    if (tree == NULL || key == NULL) {
+    if (tree == NULL || key == NULL || key->strKey == NULL) {
         fprintf(stderr, "Error in add.\nSomething in arguments is NULL.\n");
         return NULL_PTR_IN_UNEXCITED_PLACE;
     }
@@ -43,7 +43,7 @@ Error add_el_into_BT(Tree * tree, KeyType * key, InfoType * info) {
 
     while (node) {
         if (!key_cmp(key, node->key)) {
-            fprintf(stderr, "There is element with such key in this tree.\n");
+            //fprintf(stderr, "There is element with such key in this tree.\n");
             return WRONG_INPUT;
         }
         if (key_cmp(key, node->key) > 0) {
@@ -91,6 +91,141 @@ Error add_el_into_BT(Tree * tree, KeyType * key, InfoType * info) {
     return IT_IS_OK;
 }
 
+Error delete_list_or_one_child_node(Tree * tree, Node * node) {
+    if (node == NULL) {
+        return FREEING_OF_NULL_PTR;
+    }
+
+        enum Branch {
+            RIGHT,
+            LEFT,
+        } flag;
+        if (node->previous)
+            flag = (node->previous->right == node) ? RIGHT : LEFT;
+        else
+            flag = LEFT;
+
+        if (node->left) {
+            if (flag == LEFT) {
+                if (node->previous)
+                    node->previous->left = node->left;
+                else
+                    tree->root = node->left;
+            } else {
+                if (node->previous)
+                    node->previous->right = node->left;
+                else
+                    tree->root = node->left;
+            }
+            node->left->previous = node->previous;
+        } else {
+            if (flag == LEFT) {
+                if (node->previous)
+                    node->previous->left = node->right;
+                else
+                    tree->root = node->right;
+            } else {
+                if (node->previous)
+                    node->previous->right = node->right;
+                else
+                    tree->root = node->right;
+            }
+            if (node->right)
+                node->right->previous = node->previous;
+        }
+
+    free_node(node);
+    return IT_IS_OK;
+}
+
+void swap_nodes(Tree * tree, Node * node1, Node * node2) {
+    Node * ch1_1 = node1->left;
+    Node * ch1_2 = node1->right;
+
+    Node * ch2_1 = node2->left;
+    Node * ch2_2 = node2->right;
+
+    Node * p1 = node1->previous;
+    Node * p2 = node2->previous;
+
+    Node * tmp = NULL;
+
+    // меняем местами левых детей
+    if (ch1_1 == node2 || ch2_1 == node1) {
+        if (node1 == ch2_1) {
+            node2->left = ch1_1;
+            node1->left = node2;
+        } else {
+            node1->left = ch2_1;
+            node2->left = node1;
+        }
+    } else {
+        node1->left = ch2_1;
+        node2->left = ch1_1;
+    }
+    // меняем местами правых детей
+    if (ch1_2 == node2 || ch2_2 == node1) {
+        if (node1 == ch2_2) {
+            node2->right = ch1_2;
+            node1->right = node2;
+        } else {
+            node1->right = ch2_2;
+            node2->right = node1;
+        }
+    } else {
+        node1->right = ch2_2;
+        node2->right = ch1_2;
+    }
+    // меняем местами родителей
+    if (node1 == p2) {
+        node1->previous = node2;
+    } else {
+        node1->previous = p2;
+    }
+    if (node2 == p1)
+        node2->previous = node1;
+    else
+        node2->previous = p1;
+
+
+    // меняем ссылки у родителей
+    if (p1) {
+        if (p1 != node2) {
+            if (p1->left == node1) {
+                p1->left = node2;
+            } else {
+                p1->right = node2;
+            }
+        }
+    } else {
+        tree->root = node2;
+    }
+    if (p2) {
+        if (p2 != node1) {
+            if (p2->left == node2) {
+                p2->left = node1;
+            } else {
+                p2->right = node1;
+            }
+        }
+    } else {
+        tree->root = node1;
+    }
+
+    if (ch1_1)
+        if (ch1_1 != node2)
+            ch1_1->previous = node2;
+    if (ch1_2)
+        if (ch1_2 != node2)
+            ch1_2->previous = node2;
+    if (ch2_1)
+        if (ch2_1 != node1)
+            ch2_1->previous = node1;
+    if (ch2_2)
+        if (ch2_2 != node1)
+            ch2_2->previous = node1;
+}
+
 /// deletes element from binary tree with key, return IT_IS_OK if deleting was successful
 Error delete_el_from_BT(Tree * tree, KeyType * key) {
     Node * node = get_node_from_BT(tree, key);
@@ -103,88 +238,16 @@ Error delete_el_from_BT(Tree * tree, KeyType * key) {
     // min element in the right child-tree
     Node * min_node = get_min_node(node->right);
 
+    if (node->right && node->left) {
+        if (min_node) {
+            swap_nodes(tree, node, min_node);
+            //delete_list_or_one_child_node(node);
+        }
+        else if (max_node) {
+            swap_nodes(tree, node, max_node);
+        }
+    }
     /*
-    if (min_node == max_node) {
-        if (node->previous) {
-            if (node->previous->left == node) {
-                node->previous->left = NULL;
-            } else {
-                node->previous->right = NULL;
-            }
-        } else {
-            tree->root = NULL;
-        }
-        if (free_node(node) == FREEING_OF_NULL_PTR) {
-            fprintf(stderr, "Invalid free in delete function.\n");
-            return FREEING_OF_NULL_PTR;
-        }
-        return IT_IS_OK;
-    }
-
-    if (max_node != node) {
-
-    } else {
-        //TODO
-    }
-     */
-
-    if (min_node) {
-        if (node->previous) {
-            if (node->previous->left == node) {
-                node->previous->left = min_node;
-            } else {
-                node->previous->right = min_node;
-            }
-            min_node->previous->left = min_node->right;
-        } else {
-            tree->root = min_node;
-            min_node->previous = NULL;
-        }
-
-        if (node->right) {
-            node->right->previous = min_node;
-        }
-        if (node->left) {
-            node->left->previous = min_node;
-        }
-
-        if (min_node != node->right)
-            min_node->right = node->right;
-        else
-            min_node->right = NULL;
-
-        min_node->left = node->left;
-        min_node->previous = node->previous;
-    }
-    else if (max_node) {
-        if (node->previous) {
-            if (node->previous->left == node) {
-                node->previous->left = max_node;
-            } else {
-                node->previous->right = max_node;
-            }
-            max_node->previous->right = max_node->left;
-        } else {
-            tree->root = max_node;
-            max_node->previous = NULL;
-        }
-
-        if (node->left) {
-            node->left->previous = max_node;
-        }
-        if (node->right) {
-            node->right->previous = max_node;
-        }
-
-        max_node->right = node->right;
-
-        if (max_node != node->left)
-            max_node->left = node->left;
-        else
-            max_node->left = NULL;
-
-        max_node->previous = node->previous;
-    }
     else {
         if (node->previous) {
             if (node->previous->left == node) {
@@ -196,8 +259,9 @@ Error delete_el_from_BT(Tree * tree, KeyType * key) {
             tree->root = NULL;
         }
     }
+     */
 
-    free_node(node);
+    delete_list_or_one_child_node(tree, node);
 
     return IT_IS_OK;
 }
@@ -225,13 +289,13 @@ Node * get_node_from_BT(const Tree * tree, KeyType * key) {
         }
         if (key_cmp(key, node->key) > 0) {
             if (node->right == NULL) {
-                fprintf(stderr, "There is no element with such key in this tree.\n");
+                // fprintf(stderr, "There is no element with such key in this tree.\n");
                 return NULL;
             }
             node = node->right;
         } else {
             if (node->left == NULL) {
-                fprintf(stderr, "There is no element with such key in this tree.\n");
+                // fprintf(stderr, "There is no element with such key in this tree.\n");
                 return NULL;
             }
             node = node->left;
@@ -266,6 +330,62 @@ Error print_BT(const Tree * tree) {
         return IT_IS_OK;
     }
     return recursion_print_BT(tree->root, 0);
+}
+
+size_t depth_of_tree(Node * node) {
+    if (node == NULL)
+        return 0;
+    size_t left_depth = 1+depth_of_tree(node->left);
+    size_t right_depth = 1+depth_of_tree(node->right);
+    return (left_depth > right_depth) ? left_depth: right_depth;
+}
+
+Error recursion_print_BT_modified(Node* node, char ** offset) {
+    if (offset == NULL || *offset == NULL)
+        return NULL_PTR_IN_UNEXCITED_PLACE;
+
+    size_t l = strlen(*offset);
+    if (l>0 && (*offset)[l-1] != ' ' || (*offset)[0] == '\0') {
+        printf("%s\n", *offset);
+        printf("%s\\", *offset);
+    }
+    else {
+        (*offset)[l-1] = '|';
+        printf("%s\n", *offset);
+        (*offset)[l-1] = ' ';
+        printf("%s\\", *offset);
+    }
+    if (node)
+        print_key(node->key);
+    else
+        printf("-\n");
+
+
+    if (node == NULL || node->left == NULL && node->right == NULL)
+        return IT_IS_OK;
+
+    size_t len = strlen(*offset)+2;
+    *offset = realloc(*offset, sizeof(size_t) * len);
+    (*offset)[len-1] = '\0';
+    (*offset)[len-2] = '|';
+
+    recursion_print_BT_modified(node->left, offset);
+    (*offset)[len-2] = ' ';
+    recursion_print_BT_modified(node->right, offset);
+    len--;
+    *offset = realloc(*offset, sizeof(char) * len);
+    (*offset)[len-1] = '\0';
+
+    return IT_IS_OK;
+}
+
+Error print_BT_modified(const Tree * tree) {
+    size_t depth = depth_of_tree(tree->root);
+    char * offset = malloc(sizeof(char));
+    offset[0] = '\0';
+    recursion_print_BT_modified(tree->root, &offset);
+    free(offset);
+    return IT_IS_OK;
 }
 
 Error free_BT(Tree * tree) {
@@ -308,4 +428,20 @@ InfoType ** traversal_tree(Tree* tree) {
     info_array[container->number_of_elements] = NULL;
 
     return info_array;
+}
+
+Error fill_tree_with_random_data(Tree * tree, size_t number, unsigned int min, unsigned int max, size_t key_size) {
+    if (tree == NULL || min > max) {
+        return WRONG_INPUT;
+    }
+
+    for (size_t i = 0; i < number; ++i) {
+        KeyType * key = generate_key(key_size);
+        InfoType * info = generate_info(min, max);
+        if (add_el_into_BT(tree, key, info) != IT_IS_OK) {
+            free_key(key);
+            free_info(info);
+        }
+    }
+    return IT_IS_OK;
 }
