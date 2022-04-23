@@ -3,7 +3,19 @@ project(lab4_prot C)
 
 set(CMAKE_C_STANDARD 99)
 
-include_directories(binary_tree libs libs/headers tree_dialog)
+# include_directories(src/binary_tree src/libs src/libs/headers src/tree_dialog)
 
-add_executable(lab4_prot main.c binary_tree/binary_tree.h libs/KGetLine.c libs/MyString.c binary_tree/Tree.c binary_tree/Node.c binary_tree/key_and_info.c tree_dialog/tree_dialog.h tree_dialog/dialog_functions.c binary_tree/iterator.c binary_tree/file_input.c /
-        libs/FGetLine.c binary_tree/binary_tree.h)
+# find_library(Lib src/binary_tree ${CMAKE_SOURCE_DIR})
+
+# include(libs/CMakeLists.txt)
+# add_subdirectory(src/libs)
+# add_subdirectory(src/binary_tree)
+
+add_subdirectory(src)
+
+#add_executable(lab4_prot
+#        src/main.c
+#        src/tree_dialog/tree_dialog.h
+#        src/tree_dialog/dialog_functions.c
+#        src/binary_tree/binary_tree.h
+#        )

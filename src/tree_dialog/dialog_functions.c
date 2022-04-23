@@ -43,7 +43,6 @@ Error delete_tree_dialog(Tree * tree) {
 }
 
 Error print_tree_dialog(const Tree * tree) {
-
     return print_BT_modified(tree);//print_BT(tree);
 }
 

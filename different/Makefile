@@ -14,7 +14,7 @@ all: $(SRCS) $(EXE)
 $(EXE): $(OBJS)
 	ar -r $@ $(OBJS)
 	#$(CC) $(LDFLAGS) $(OBJS) -o $@ $(LIBS)
-	rm -rf $(OBJS)
+	# rm -rf $(OBJS)
 
 .c.o:
 	$(CC) $(CFLAGS) $< -c $(LDFLAGS)
