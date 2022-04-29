@@ -1,3 +1,5 @@
+project(binary_tree)
+
 add_library(binary_tree STATIC
         file_input.c
         iterator.c

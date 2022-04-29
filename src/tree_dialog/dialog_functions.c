@@ -8,6 +8,7 @@
 #include "Errors.h"
 #include "binary_tree.h"
 #include "KGetLine.h"
+#include "FGetLine.h"
 #include "MyString.h"
 
 Error add_tree_dialog(Tree * tree) {
@@ -190,6 +191,49 @@ Error read_tree_dialog(Tree ** tree) {
     free_BT(*tree);
 
     *tree = read_tree("tree.txt");
+
+    return IT_IS_OK;
+}
+
+Error number_of_words_in_file() {
+    printf("enter the name of your txt file: \n");
+    char * file_name = get_line();
+    if (file_name == NULL || file_name[0] == '\0') {
+        if (file_name)
+            free(file_name);
+        return WRONG_INPUT;
+    }
+
+    FILE * file = fopen(file_name, "r");
+    if (file == NULL) {
+        free(file_name);
+        return WRONG_INPUT;
+    }
+
+    char ** lines = f_get_lines(file_name);
+    if (lines == NULL) {
+        free(file_name);
+        return NULL_PTR_IN_UNEXCITED_PLACE;
+    }
+
+    int i = 0;
+    while (lines[i++])
+        printf("%s\n", lines[i-1]);
+
+    for (int j = 0; j < i; ++j) {
+        char * line = lines[j];
+        if (line) {
+            char ** words = split(line);
+            if (words == NULL) {
+                fprintf(stderr, "NULL in the splitting of a not NULL line\n");
+                exit(NULL_PTR_IN_UNEXCITED_PLACE);
+            }
+            int k = 0;
+            while (words[k++]) {
+                printf("word%d: %s", k, words[k]);
+            }
+        }
+    }
 
     return IT_IS_OK;
 }

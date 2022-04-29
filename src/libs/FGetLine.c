@@ -50,7 +50,33 @@ char * f_get_line(FILE * file, long offset) {
     return res;
 }
 
-char * f_get_lines(char * path) {
+char ** f_get_lines(char * file_name) {
+    if (file_name == NULL)
+        return NULL;
+
+    FILE * file = fopen(file_name, "r");
+    if (file == NULL) {
+        fprintf(stderr, "there is not such file\n");
+        return NULL;
+    }
+
+    char * line = NULL;
+    int number_of_lines = 0;
+    char ** lines = NULL;
+    while (line = f_get_line(file, ftell(file))) {
+        if (line) {
+            number_of_lines++;
+            lines = realloc(lines, sizeof(char*) * number_of_lines);
+            lines[number_of_lines-1] = line;
+        }
+    }
+    lines = realloc(lines, sizeof(char*) * (number_of_lines+1));
+    lines[number_of_lines] = NULL;
+
+    return lines;
+}
+
+char * f_get_lines_old(char * path) {
     setlocale(LC_ALL, "Rus");
     int m_len = 0;
     char * res = (char*) calloc(1, sizeof(char));

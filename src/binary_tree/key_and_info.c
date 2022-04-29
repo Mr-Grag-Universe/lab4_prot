@@ -140,7 +140,12 @@ InfoType * enter_info() {
         exit(MEMORY_OVERFLOW);
     }
 
-    info->val = get_int();
+    int entered_number = -1;
+
+    while (entered_number < 0) {
+        entered_number = get_int();
+    }
+    info->val = entered_number;
 
     return info;
 }

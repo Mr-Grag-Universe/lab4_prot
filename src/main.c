@@ -157,6 +157,8 @@ int main() {
         exit(NULL_PTR_IN_UNEXCITED_PLACE);
     }
 
+    number_of_words_in_file();
+
     while (!finish) {
         /// clrscr();
         print_menu(menu);

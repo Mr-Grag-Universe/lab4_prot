@@ -33,6 +33,7 @@ KeyType * generate_key(size_t key_size);
 typedef struct InfoType {
     unsigned int val;
 } InfoType;
+InfoType * init_info();
 /// just put src.val into info.val              \n
 /// if there is NULL return false, else true    \n
 bool copy_info(InfoType * info, InfoType * src);
@@ -70,8 +71,11 @@ Error delete_el_from_BT(Tree * tree, KeyType * key);
 InfoType * get_info_from_BT(const Tree * tree, KeyType * key);
 Node * get_node_from_BT(const Tree * tree, KeyType * key);
 Error print_BT(const Tree * tree);
+Error print_BT_modified(const Tree * tree);
 Error free_BT(Tree * tree);
 InfoType ** traversal_tree(Tree* tree);
+Error fill_tree_with_random_data(Tree * tree, size_t number, unsigned int min, unsigned int max, size_t key_size);
+Tree * read_tree(char * name_of_file);
 
 ///=============TREE_ITERATOR=============
 // not use

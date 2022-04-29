@@ -16,4 +16,5 @@ Error find_max_dialog(const Tree * tree);
 Error timing_dialog();
 Error random_dialog(Tree * tree);
 Error read_tree_dialog(Tree ** tree);
+Error number_of_words_in_file();
 #endif //LAB4_PROT_TREE_DIALOG_H
