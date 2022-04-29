@@ -143,7 +143,7 @@ char * str_copy(char * line) {
 	return copy;
 }
 
-char ** split(char * line) {
+char ** split(char * line, char * separator) {
 	char ** res = NULL;
 	int n = 0;
 
@@ -156,14 +156,14 @@ char ** split(char * line) {
 
 	// getchar();
 
-	char * word = strtok(copy, " \t");
+	char * word = strtok(copy, separator);
 	while (word) {
 		// printf("%ld, %ld\n", word, line);
 		n++;
 		res = realloc(res, sizeof(char*) * n);
 		res[n-1] = malloc(sizeof(char) * (strlen(word)+1));
 		memcpy(res[n-1], word, sizeof(char)*(strlen(word)+1));
-		word = strtok(NULL, " \t");
+		word = strtok(NULL, separator);
 	}
 	free(copy);
 	res = realloc(res, sizeof(char*) * (n+1));

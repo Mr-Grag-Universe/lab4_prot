@@ -2,7 +2,7 @@
 #define MSTR
 void tabs_to_spaces(char * line);
 void delete_double_spaces(char ** line);
-char ** split(char * line);
+char ** split(char * line, char * separator);
 unsigned char is_digit(char * s);
 unsigned char is_float(char * s);
 unsigned char is_operator(char * s);

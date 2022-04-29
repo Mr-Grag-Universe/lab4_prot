@@ -29,6 +29,7 @@ char ** init_menu_points() {
     menu_points[TIMING] = "check out time";// of traversal and searching in BT";
     menu_points[RANDOM_GENERATE] = "generate random tree data";
     menu_points[READ_TREE] = "read tree from file";
+    menu_points[COUNT_WORDS_IN_FILE] = "calculate how many each word is in file";
     return menu_points;
 }
 
@@ -98,6 +99,10 @@ bool execute_command(Tree ** tree, Command command) {
             read_tree_dialog(tree);
             return false;
         }
+        case COUNT_WORDS_IN_FILE: {
+            number_of_words_in_file();
+            return false;
+        }
         default: {
             printf("Your command is wrong!\n");
             return false;
@@ -136,6 +141,8 @@ Command get_command_code(char * command) {
         return TIMING;
     else if (!strcmp(command, "read"))
         return READ_TREE;
+    else if (!strcmp(command, "counter"))
+        return COUNT_WORDS_IN_FILE;
     else return UNKNOWN_COMMAND;
 }
 
@@ -157,7 +164,7 @@ int main() {
         exit(NULL_PTR_IN_UNEXCITED_PLACE);
     }
 
-    number_of_words_in_file();
+    //number_of_words_in_file();
 
     while (!finish) {
         /// clrscr();

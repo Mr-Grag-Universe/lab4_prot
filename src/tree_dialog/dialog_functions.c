@@ -211,29 +211,55 @@ Error number_of_words_in_file() {
     }
 
     char ** lines = f_get_lines(file_name);
+    fclose(file);
+    free(file_name);
     if (lines == NULL) {
-        free(file_name);
         return NULL_PTR_IN_UNEXCITED_PLACE;
     }
 
     int i = 0;
-    while (lines[i++])
-        printf("%s\n", lines[i-1]);
+    while (lines[i++]) {}
+        //printf("%s\n", lines[i-1]);
 
+    Tree * tree = init_tree();
     for (int j = 0; j < i; ++j) {
         char * line = lines[j];
         if (line) {
-            char ** words = split(line);
+            char ** words = split(line, " \t\n.,;\"");
             if (words == NULL) {
                 fprintf(stderr, "NULL in the splitting of a not NULL line\n");
-                exit(NULL_PTR_IN_UNEXCITED_PLACE);
+                free(line);
+                continue;
+                //exit(NULL_PTR_IN_UNEXCITED_PLACE);
             }
             int k = 0;
             while (words[k++]) {
-                printf("word%d: %s", k, words[k]);
+                //printf("word%d: %s\n", k-1, words[k-1]);
+                KeyType * key = init_key();
+                key->strKey = words[k-1];
+                key->keySize = strlen(key->strKey)+1;
+                Node * node = get_node_from_BT(tree, key);
+                if (node) {
+                    free_key(key);
+                    node->info->val++;
+                } else {
+                    InfoType * info = init_info();
+                    info->val = 1;
+                    add_el_into_BT(tree, key, info);
+                }
             }
+            free(words);
         }
+        free(line);
     }
+    free(lines);
+
+    TreeIteratorContainer * container = create_iterator(tree);
+    for (int j = 0; j < container->number_of_elements; ++j) {
+        print_node(container->iterator[j]);
+    }
+    free_container(container);
+    free_BT(tree);
 
     return IT_IS_OK;
 }

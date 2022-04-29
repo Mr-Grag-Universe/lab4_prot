@@ -6,4 +6,4 @@ add_library(binary_tree STATIC
         key_and_info.c
         Node.c
         Tree.c
-        )
+        graphviz_modul.c)
