@@ -34,9 +34,9 @@ char * create_name(int ind) {
 }
 
 int comp(const void * _node1, const void * _node2) {
-    KeyType * key1 = ((Node*) _node1)->key;
-    KeyType * key2 = ((Node*) _node2)->key;
-    return -key_cmp(key1, key2);
+    KeyType * key1 = (*((Node**) _node1))->key;
+    KeyType * key2 = (*((Node**) _node2))->key;
+    return key_cmp(key1, key2);
 }
 
 Error update_graph(Tree * tree) {
@@ -103,9 +103,12 @@ Error update_graph(Tree * tree) {
         size_t ind1 = -1;
         size_t ind2 = -1;
         if (node->left)
-            ind1 = binarySearch(container->iterator, node->left, number, sizeof(Node*), comp);
+            ind1 = binarySearch(container->iterator, &(node->left), number, sizeof(Node*), comp);
         if (node->right)
-            ind2 = binarySearch(container->iterator, node->right, number, sizeof(Node*), comp);
+            ind2 = binarySearch(container->iterator, &(node->right), number, sizeof(Node*), comp);
+
+        if (ind1 > number || ind2 >= number)
+            fprintf(stderr, "there is no some nodes in iter\n");
 
         if (ind1 != -1) {
             char * name1 = create_name((int) ind1);
@@ -128,6 +131,7 @@ Error update_graph(Tree * tree) {
             fwrite(";\n", 1, 2, file);
             free(name2);
         }
+        free(name);
     }
 
     fwrite("}", 1, 1, file);
