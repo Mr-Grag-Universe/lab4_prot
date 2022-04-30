@@ -76,6 +76,8 @@ Error free_BT(Tree * tree);
 InfoType ** traversal_tree(Tree* tree);
 Error fill_tree_with_random_data(Tree * tree, size_t number, unsigned int min, unsigned int max, size_t key_size);
 Tree * read_tree(char * name_of_file);
+Error init_graph();
+Error update_graph(Tree * tree);
 
 ///=============TREE_ITERATOR=============
 // not use

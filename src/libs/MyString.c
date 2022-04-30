@@ -1,7 +1,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <locale.h>
 #include "KGetLine.h"
+#include "ctype.h"
 
 void tabs_to_spaces(char * line) {
 	if (line == NULL) return;
@@ -196,4 +198,17 @@ char * generate_word(size_t size) {
     }
     word[size] = '\0';
     return word;
+}
+
+void line_to_lower(char * line) {
+    if (line == NULL)
+        return;
+
+    setlocale(LC_ALL, "Rus");
+
+    int i = 0;
+    while (line[i++]) {
+        char c = line[i-1];
+        line[i-1] = (char) tolower(c);
+    }
 }

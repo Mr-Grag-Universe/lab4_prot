@@ -225,7 +225,7 @@ Error number_of_words_in_file() {
     for (int j = 0; j < i; ++j) {
         char * line = lines[j];
         if (line) {
-            char ** words = split(line, " \t\n.,;\"");
+            char ** words = split(line, " \t\n.,;\")(");
             if (words == NULL) {
                 fprintf(stderr, "NULL in the splitting of a not NULL line\n");
                 free(line);
@@ -237,6 +237,9 @@ Error number_of_words_in_file() {
                 //printf("word%d: %s\n", k-1, words[k-1]);
                 KeyType * key = init_key();
                 key->strKey = words[k-1];
+                line_to_lower(key->strKey);
+                print_key(key);
+                getchar();
                 key->keySize = strlen(key->strKey)+1;
                 Node * node = get_node_from_BT(tree, key);
                 if (node) {

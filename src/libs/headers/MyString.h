@@ -10,4 +10,5 @@ int is_letter(char * line);
 int get_int();
 char * str_copy(char * line);
 char * generate_word(size_t size);
+void line_to_lower(char * line);
 #endif

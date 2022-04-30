@@ -5,6 +5,7 @@
 #ifndef LAB4_PROT_TREE_DIALOG_H
 #define LAB4_PROT_TREE_DIALOG_H
 #include "Errors.h"
+#include "binary_tree.h"
 
 Error add_tree_dialog(Tree * tree);
 Error print_tree_dialog(Tree * tree);

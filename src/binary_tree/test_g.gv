@@ -1,0 +1,11 @@
+digraph test{
+    a;
+    b;
+    c;
+    d;
+    e;
+    a->c;
+    b->c;
+    c->e;
+    d->e;
+}

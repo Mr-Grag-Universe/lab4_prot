@@ -166,6 +166,8 @@ int main() {
 
     //number_of_words_in_file();
 
+    init_graph();
+
     while (!finish) {
         /// clrscr();
         print_menu(menu);

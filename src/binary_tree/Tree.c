@@ -38,6 +38,8 @@ Error add_el_into_BT(Tree * tree, KeyType * key, InfoType * info) {
         tree->root->info = info;
         tree->root->key = key;
 
+        update_graph(tree);
+
         return IT_IS_OK;
     }
 
@@ -87,6 +89,8 @@ Error add_el_into_BT(Tree * tree, KeyType * key, InfoType * info) {
         node->left->key = key;
         node->left->info = info;
     }
+
+    update_graph(tree);
 
     return IT_IS_OK;
 }
