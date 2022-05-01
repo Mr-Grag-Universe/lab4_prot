@@ -18,4 +18,5 @@ Error timing_dialog();
 Error random_dialog(Tree * tree);
 Error read_tree_dialog(Tree ** tree);
 Error number_of_words_in_file();
+Error dialog_update_graphviz(Tree * tree);
 #endif //LAB4_PROT_TREE_DIALOG_H

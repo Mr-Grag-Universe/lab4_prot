@@ -18,6 +18,7 @@ typedef enum Commands {
     RANDOM_GENERATE,
     READ_TREE,
     COUNT_WORDS_IN_FILE,
+    GRAPHVIZ,
     UNKNOWN_COMMAND,
 } Command;
 #endif //LAB3_COMMANDS_H

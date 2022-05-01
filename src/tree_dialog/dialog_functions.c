@@ -266,3 +266,32 @@ Error number_of_words_in_file() {
 
     return IT_IS_OK;
 }
+
+Error dialog_update_graphviz(Tree * tree) {
+    printf("enter your output file's name: ");
+    char * out = get_line();
+    if (out == NULL)
+        return WRONG_INPUT;
+    Error report = update_graph(tree);
+
+    size_t len = strlen(out);
+
+    char * c1 = "dot -v -Tpng -o ";
+    char * c2 = " graph.gv";
+    size_t c1_len = strlen(c1);
+    size_t c2_len = strlen(c2);
+
+    char * command = calloc(len + c1_len + c2_len + 1, sizeof(char));
+    memmove(command, c1, c1_len + 1);
+    memmove(command + c1_len, out, len + 1);
+    memmove(command + c1_len + len, c2, c2_len + 1);
+
+    system(command);
+    if (report == IT_IS_OK)
+        remove("graph.gv");
+
+    free(command);
+    free(out);
+
+    return report;
+}

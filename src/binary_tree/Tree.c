@@ -90,7 +90,7 @@ Error add_el_into_BT(Tree * tree, KeyType * key, InfoType * info) {
         node->left->info = info;
     }
 
-    update_graph(tree);
+    // update_graph(tree);
 
     return IT_IS_OK;
 }

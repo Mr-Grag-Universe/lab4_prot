@@ -30,6 +30,7 @@ char ** init_menu_points() {
     menu_points[RANDOM_GENERATE] = "generate random tree data";
     menu_points[READ_TREE] = "read tree from file";
     menu_points[COUNT_WORDS_IN_FILE] = "calculate how many each word is in file";
+    menu_points[GRAPHVIZ] = "update graphviz png";
     return menu_points;
 }
 
@@ -103,6 +104,10 @@ bool execute_command(Tree ** tree, Command command) {
             number_of_words_in_file();
             return false;
         }
+        case GRAPHVIZ: {
+            dialog_update_graphviz(*tree);
+            return false;
+        }
         default: {
             printf("Your command is wrong!\n");
             return false;
@@ -143,6 +148,8 @@ Command get_command_code(char * command) {
         return READ_TREE;
     else if (!strcmp(command, "counter"))
         return COUNT_WORDS_IN_FILE;
+    else if (!strcmp(command, "graphviz"))
+        return GRAPHVIZ;
     else return UNKNOWN_COMMAND;
 }
 
