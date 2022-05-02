@@ -43,13 +43,14 @@ Error update_graph(Tree * tree) {
     if (tree == NULL)
         return NULL_PTR_IN_UNEXCITED_PLACE;
 
+    /*
     FILE * file = fopen("graph.gv", "r+");
     if (file == NULL) {
         init_graph();
         file = fopen("graph.gv", "r+");
     }
 
-    /*
+    /////
     char ** lines = f_get_lines("test_g.gv");
     if (lines == NULL)
         return NULL_PTR_IN_UNEXCITED_PLACE;
@@ -72,7 +73,7 @@ Error update_graph(Tree * tree) {
     size_t name_len = strlen(name);
 
     lines[i] = malloc(sizeof(char) * ( + 1));
-     */
+     /////
 
     TreeIteratorContainer * container = create_iterator(tree);
     size_t number = container->number_of_elements;
@@ -116,10 +117,10 @@ Error update_graph(Tree * tree) {
             size_t name_len1 = strlen(name1);
 
             fprintf(file, "%s -> %s;\n", name, name1);
-            /*fwrite(name, 1, name_len, file);
-            fwrite(" -> ", 1, 4, file);
-            fwrite(name1, 1, name_len1, file);
-            fwrite(";\n", 1, 2, file);*/
+            //fwrite(name, 1, name_len, file);
+            //fwrite(" -> ", 1, 4, file);
+            //fwrite(name1, 1, name_len1, file);
+            //fwrite(";\n", 1, 2, file);
             free(name1);
         } else {
             fprintf(file, "\tnull%d%d [shape=point];\n", i, 1);
@@ -131,10 +132,6 @@ Error update_graph(Tree * tree) {
             //size_t name_len2 = strlen(name2);
 
             fprintf(file, "%s -> %s;\n", name, name2);
-            /*fwrite(name, 1, name_len, file);
-            fwrite(" -> ", 1, 4, file);
-            fwrite(name2, 1, name_len2, file);
-            fwrite(";\n", 1, 2, file);*/
             free(name2);
         } else {
             fprintf(file, "\tnull%d%d [shape=point];\n", i, 2);
@@ -148,10 +145,11 @@ Error update_graph(Tree * tree) {
     fclose(file);
 
     free_container(container);
+    */
 
-    //FILE * stream = fopen("test_g.gv", "w+");
-    //bst_print_dot(tree->root, stream);
-    //fclose(stream);
+    FILE * stream = fopen("graph.gv", "w+");
+    bst_print_dot(tree->root, stream);
+    fclose(stream);
 
     return IT_IS_OK;
 }
@@ -160,7 +158,6 @@ void bst_print_dot_null(char *  key, int nullcount, FILE* stream) {
     fprintf(stream, "    null%d [shape=point];\n", nullcount);
     fprintf(stream, "    %s -> null%d;\n", key, nullcount);
 }
-
 void bst_print_dot_aux(Node * node, FILE* stream) {
     static int nullcount = 0;
 
@@ -178,7 +175,6 @@ void bst_print_dot_aux(Node * node, FILE* stream) {
     else
         bst_print_dot_null(node->key->strKey, nullcount++, stream);
 }
-
 void bst_print_dot(Node * tree, FILE* stream) {
     fprintf(stream, "digraph BST {\n");
     fprintf(stream, "    node [fontname=\"Arial\"];\n");

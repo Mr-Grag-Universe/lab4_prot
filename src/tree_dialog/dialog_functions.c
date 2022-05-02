@@ -287,6 +287,7 @@ Error dialog_update_graphviz(Tree * tree) {
     memmove(command + c1_len + len, c2, c2_len + 1);
 
     system(command);
+    //system("dot -v -Tpng -o png1.png test_g.gv");
     if (report == IT_IS_OK)
         remove("graph.gv");
 
