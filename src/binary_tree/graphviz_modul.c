@@ -117,10 +117,6 @@ Error update_graph(Tree * tree) {
             size_t name_len1 = strlen(name1);
 
             fprintf(file, "%s -> %s;\n", name, name1);
-            //fwrite(name, 1, name_len, file);
-            //fwrite(" -> ", 1, 4, file);
-            //fwrite(name1, 1, name_len1, file);
-            //fwrite(";\n", 1, 2, file);
             free(name1);
         } else {
             fprintf(file, "\tnull%d%d [shape=point];\n", i, 1);

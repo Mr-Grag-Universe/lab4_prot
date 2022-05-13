@@ -69,6 +69,7 @@ Tree * read_tree(char * name_of_file) {
             break;
         }
     }
+    fclose(file);
 
     return tree;
 }
